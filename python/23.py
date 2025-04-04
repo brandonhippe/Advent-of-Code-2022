@@ -2,10 +2,41 @@ import re
 import sys
 from pathlib import Path
 from typing import Any, List, Optional, Tuple
+from collections import deque
+from itertools import product
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
 from Modules.timer import Timer
 from collections import defaultdict
+
+
+def move_elves(elves: set[tuple[int,]], MOVE_ORDER) -> tuple[set[tuple[int,]], bool]:
+    """Move elves based on the given MOVE_ORDER."""
+    proposed = defaultdict(set)
+    spot_counts = defaultdict(int)
+    for elf in filter(lambda e: any(offset != (0, 0) and tuple(p + o for p, o in zip(e, offset)) in elves for offset in product(range(-1, 2), repeat=2)), elves):
+        for checks, move in MOVE_ORDER:
+            if any(tuple(p + o for p, o in zip(elf, offset)) in elves for offset in checks):
+                continue
+
+            spot_counts[tuple(p + o for p, o in zip(elf, move))] += 1
+            proposed[elf] = tuple(p + o for p, o in zip(elf, move))
+            break
+
+    new_elves = set()
+    moved = False
+    for elf in elves:
+        if elf in proposed:
+            new_pos = proposed[elf]
+            if spot_counts[new_pos] == 1:
+                moved = True
+                new_elves.add(new_pos)
+            else:
+                new_elves.add(elf)
+        else:
+            new_elves.add(elf)
+
+    return new_elves, moved
 
 
 def part1(data):
@@ -22,33 +53,13 @@ def part1(data):
             if l == '#':
                 elves.add((x, y))
 
-    MOVE_ORDER = [[[[-1, -1], [0, -1], [1, -1]], [0, -1]], [[[-1, 1], [0, 1], [1, 1]], [0, 1]], [[[-1, -1], [-1, 0], [-1, 1]], [-1, 0]], [[[1, -1], [1, 0], [1, 1]], [1, 0]]]
+    MOVE_ORDER = deque([[[[-1, -1], [0, -1], [1, -1]], [0, -1]], [[[-1, 1], [0, 1], [1, 1]], [0, 1]], [[[-1, -1], [-1, 0], [-1, 1]], [-1, 0]], [[[1, -1], [1, 0], [1, 1]], [1, 0]]])
 
     round = 1
     moved = True
     while moved and round <= 10:
-        proposed = defaultdict(set)
-        moved = False
-        for elf in elves:
-            if all([tuple(p + o for p, o in zip(elf, offset)) not in elves for offset in [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]]):
-                    continue
-
-            moved = True
-
-            for checks, move in MOVE_ORDER:
-                if any([tuple(p + o for p, o in zip(elf, offset)) in elves for offset in checks]):
-                    continue
-
-                proposed[tuple(p + o for p, o in zip(elf, move))].add(elf)
-                break
-
-        for elf, pickedBy in zip(proposed.keys(), proposed.values()):
-            if len(pickedBy) == 1:
-                elves = elves.difference(pickedBy)
-                elves.add(elf)
-
-        MOVE_ORDER.append(MOVE_ORDER.pop(0))
-
+        elves, moved = move_elves(elves, MOVE_ORDER)
+        MOVE_ORDER.rotate(-1)
         round += 1
 
     mins = [min(e[i] for e in elves) for i in range(2)]
@@ -70,36 +81,16 @@ def part2(data):
             if l == '#':
                 elves.add((x, y))
 
-    MOVE_ORDER = [[[[-1, -1], [0, -1], [1, -1]], [0, -1]], [[[-1, 1], [0, 1], [1, 1]], [0, 1]], [[[-1, -1], [-1, 0], [-1, 1]], [-1, 0]], [[[1, -1], [1, 0], [1, 1]], [1, 0]]]
+    MOVE_ORDER = deque([[[[-1, -1], [0, -1], [1, -1]], [0, -1]], [[[-1, 1], [0, 1], [1, 1]], [0, 1]], [[[-1, -1], [-1, 0], [-1, 1]], [-1, 0]], [[[1, -1], [1, 0], [1, 1]], [1, 0]]])
 
-    round = 1
+    round = 0
     moved = True
-    while moved:            
-        proposed = defaultdict(set)
-        moved = False
-        for elf in elves:
-            if all([tuple(p + o for p, o in zip(elf, offset)) not in elves for offset in [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]]]):
-                    continue
-
-            moved = True
-
-            for checks, move in MOVE_ORDER:
-                if any([tuple(p + o for p, o in zip(elf, offset)) in elves for offset in checks]):
-                    continue
-
-                proposed[tuple(p + o for p, o in zip(elf, move))].add(elf)
-                break
-
-        for elf, pickedBy in zip(proposed.keys(), proposed.values()):
-            if len(pickedBy) == 1:
-                elves = elves.difference(pickedBy)
-                elves.add(elf)
-
-        MOVE_ORDER.append(MOVE_ORDER.pop(0))
-
+    while moved:
+        elves, moved = move_elves(elves, MOVE_ORDER)
+        MOVE_ORDER.rotate(-1)
         round += 1
     
-    return round - 1
+    return round
 
 
 def printElves(mins, maxs, elves):
