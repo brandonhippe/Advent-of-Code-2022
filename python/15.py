@@ -23,7 +23,7 @@ def part1(data, testLine = 2000000):
     maxX = float('-inf')
 
     for line in data:
-        nums = [int(x) for x in re.findall("-?\d+", line)]
+        nums = [int(x) for x in re.findall(r"-?\d+", line)]
         sensor = tuple(nums[:2])
         beacon = tuple(nums[2:])
         d = manhatDist(sensor, beacon)
@@ -46,7 +46,7 @@ def part2(data, testLine = 2000000):
 
     sensorData = []
     for line in data:
-        nums = [int(x) for x in re.findall("-?\d+", line)]
+        nums = [int(x) for x in re.findall(r"-?\d+", line)]
         sensor = tuple(nums[:2])
         beacon = tuple(nums[2:])
         d = manhatDist(sensor, beacon)

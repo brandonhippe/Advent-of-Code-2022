@@ -34,7 +34,7 @@ def part1(data):
         crates[i].reverse()
     
     for line in data[ix:]:
-        qty, start, dest = [int(x) for x in re.findall("\d+", line)]
+        qty, start, dest = [int(x) for x in re.findall(r"\d+", line)]
 
         while qty != 0:
             qty -= 1
@@ -69,7 +69,7 @@ def part2(data):
         crates[i].reverse()
     
     for line in data[ix:]:
-        qty, start, dest = [int(x) for x in re.findall("\d+", line)]
+        qty, start, dest = [int(x) for x in re.findall(r"\d+", line)]
         crates[dest - 1] += crates[start - 1][-qty:]
         crates[start - 1] = crates[start - 1][:-qty]
 

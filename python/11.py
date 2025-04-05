@@ -23,24 +23,24 @@ def part1(data):
 
     for line in data:
         if "Monkey" in line:
-            monkeyNum = [int(x) for x in re.findall("-?\d+", line)][0]
+            monkeyNum = [int(x) for x in re.findall(r"-?\d+", line)][0]
             monkeyBusiness[monkeyNum] = 0
         elif "Starting items" in line:
             items.append([])
-            for i in [int(x) for x in re.findall("-?\d+", line)]:
+            for i in [int(x) for x in re.findall(r"-?\d+", line)]:
                 items[-1].append(i)
         elif "Operation" in line:
             if "old * old" in line:
                 monkeyOps[monkeyNum] = [square, 0]
             elif "*" in line:
-                monkeyOps[monkeyNum] = [mult, [int(x) for x in re.findall("-?\d+", line)][0]]
+                monkeyOps[monkeyNum] = [mult, [int(x) for x in re.findall(r"-?\d+", line)][0]]
             else:
-                monkeyOps[monkeyNum] = [add, [int(x) for x in re.findall("-?\d+", line)][0]]
+                monkeyOps[monkeyNum] = [add, [int(x) for x in re.findall(r"-?\d+", line)][0]]
         elif len(line) != 0:
             if monkeyNum not in monkeyTests:
                 monkeyTests[monkeyNum] = []
 
-            monkeyTests[monkeyNum].append([int(x) for x in re.findall("-?\d+", line)][0])
+            monkeyTests[monkeyNum].append([int(x) for x in re.findall(r"-?\d+", line)][0])
 
     for _ in range(20):
         for monkeyNum, monkeyItems in enumerate(items):
@@ -75,24 +75,24 @@ def part2(data):
 
     for line in data:
         if "Monkey" in line:
-            monkeyNum = [int(x) for x in re.findall("-?\d+", line)][0]
+            monkeyNum = [int(x) for x in re.findall(r"-?\d+", line)][0]
             monkeyBusiness[monkeyNum] = 0
         elif "Starting items" in line:
             items.append([])
-            for i in [int(x) for x in re.findall("-?\d+", line)]:
+            for i in [int(x) for x in re.findall(r"-?\d+", line)]:
                 items[-1].append(i)
         elif "Operation" in line:
             if "old * old" in line:
                 monkeyOps[monkeyNum] = [square, 0]
             elif "*" in line:
-                monkeyOps[monkeyNum] = [mult, [int(x) for x in re.findall("-?\d+", line)][0]]
+                monkeyOps[monkeyNum] = [mult, [int(x) for x in re.findall(r"-?\d+", line)][0]]
             else:
-                monkeyOps[monkeyNum] = [add, [int(x) for x in re.findall("-?\d+", line)][0]]
+                monkeyOps[monkeyNum] = [add, [int(x) for x in re.findall(r"-?\d+", line)][0]]
         elif len(line) != 0:
             if monkeyNum not in monkeyTests:
                 monkeyTests[monkeyNum] = []
 
-            monkeyTests[monkeyNum].append([int(x) for x in re.findall("-?\d+", line)][0])
+            monkeyTests[monkeyNum].append([int(x) for x in re.findall(r"-?\d+", line)][0])
 
     monkeyBusiness = {m: 0 for m in monkeyBusiness.keys()}
 

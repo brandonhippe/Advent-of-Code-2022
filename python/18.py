@@ -16,7 +16,7 @@ def part1(data):
     64
     """
 
-    cubes = set(tuple(int(x) for x in re.findall('-?\d+', line)) for line in data)
+    cubes = set(tuple(int(x) for x in re.findall(r'-?\d+', line)) for line in data)
 
     cubeFaces = {c: [True] * 6 for c in cubes}
     for c in cubes:
@@ -34,7 +34,7 @@ def part2(data):
     58
     """
 
-    cubes = set(tuple(int(x) for x in re.findall('-?\d+', line)) for line in data)
+    cubes = set(tuple(int(x) for x in re.findall(r'-?\d+', line)) for line in data)
 
     cubeFaces = {c: [True] * 6 for c in cubes}
     for c in cubes:

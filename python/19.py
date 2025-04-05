@@ -19,7 +19,7 @@ def part1(data):
 
     qualitySum = 0
     for line in data:
-        blueprint, oreCost, clayOre, obsOre, obsClay, geoOre, geoObs = [int(x) for x in re.findall('\d+', line)]
+        blueprint, oreCost, clayOre, obsOre, obsClay, geoOre, geoObs = [int(x) for x in re.findall(r'\d+', line)]
         qualitySum += blueprint * bfs(oreCost, clayOre, obsOre, obsClay, geoOre, geoObs, 24)
 
     return qualitySum
@@ -34,7 +34,7 @@ def part2(data):
 
     product = 1
     for line in data[:3]:
-        _, oreCost, clayOre, obsOre, obsClay, geoOre, geoObs = [int(x) for x in re.findall('\d+', line)]
+        _, oreCost, clayOre, obsOre, obsClay, geoOre, geoObs = [int(x) for x in re.findall(r'\d+', line)]
         product *= mostGeodes(oreCost, clayOre, obsOre, obsClay, geoOre, geoObs, 32)
 
     return product

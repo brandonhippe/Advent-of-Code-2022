@@ -22,8 +22,8 @@ def part1(data):
             if monkey in monkeys:
                 continue
             
-            if len(re.findall('-?\d+', line)) != 0:
-                monkeys[monkey] = [int(x) for x in re.findall('-?\d+', line)][0]
+            if len(re.findall(r'-?\d+', line)) != 0:
+                monkeys[monkey] = [int(x) for x in re.findall(r'-?\d+', line)][0]
             else:
                 _, m1, op, m2 = line[4:].split(' ')
                 if m1 in monkeys and m2 in monkeys:

@@ -24,7 +24,7 @@ def part1(data):
 
     for line in data:
         splitLine = line.split(" ")
-        flowRates[splitLine[1]] = [int(x) for x in re.findall("\d+", line)][0]
+        flowRates[splitLine[1]] = [int(x) for x in re.findall(r"\d+", line)][0]
         connections[splitLine[1]] = defaultdict(lambda: float('inf'))
         for v in splitLine[9:]:
             connections[splitLine[1]][v.strip(',')] = 1
@@ -69,7 +69,7 @@ def part2(data):
 
     for line in data:
         splitLine = line.split(" ")
-        flowRates[splitLine[1]] = [int(x) for x in re.findall("\d+", line)][0]
+        flowRates[splitLine[1]] = [int(x) for x in re.findall(r"\d+", line)][0]
         connections[splitLine[1]] = defaultdict(lambda: float('inf'))
         for v in splitLine[9:]:
             connections[splitLine[1]][v.strip(',')] = 1

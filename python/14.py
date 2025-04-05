@@ -17,7 +17,7 @@ def part1(data):
 
     area = set()
     for line in data:
-        nums = [int(x) for x in re.findall("\d+", line)]
+        nums = [int(x) for x in re.findall(r"\d+", line)]
 
         pos = tuple(nums[:2])
 
@@ -64,7 +64,7 @@ def part2(data):
 
     area = set()
     for line in data:
-        nums = [int(x) for x in re.findall("\d+", line)]
+        nums = [int(x) for x in re.findall(r"\d+", line)]
 
         pos = tuple(nums[:2])
 
